@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script>
+      window.GLOBAL = {
+        TITLE: 'ODEM',
+        NUMBER_ROUND_4 : 4,
+        NUMBER_ROUND_2 : 2,
+        HOST: 'http://szhb2k.dazyun.cn/',
+        PORT: 3030,
+        TIMEOUT: 1000 * 30,
+        LANG_TITLE: {
+          zh: 'ODEM',
+          en: 'ODEM',
+          tw: 'ODEM'
+        },
+        DEFAULT_LANG: 'tw',
+        DEFAULT_YEAR: '',
+        polling_time: 10 * 1000,
+        is_sw_market: true,
+        market5: true,
+        deal30: true,
+        whiteList : ['/fabi','/market','/index', '/login' ,'/register', '/forgetpwd', '/deal', '/', '/deal_c', '/text'] // no redirect whitelist
+      }
+      window.GLOBAL.DEFAULT_YEAR = (new Date()).getFullYear() +' ';
+      window.GLOBAL.HOST_UPLOAD_IMAGE = window.GLOBAL.HOST + 'web/uploadImg'
+
+      document.title = window.GLOBAL.TITLE
+      function _log(res){
+        //console.log(res)
+      }
+      function init_polling(func)
+      {
+        return setInterval(func, window.GLOBAL.polling_time)
+      }
+      var __socket = io(window.GLOBAL.HOST.substr(0,window.GLOBAL.HOST.length-1)+':'+window.GLOBAL.PORT);
+      __socket.on('error', _log)
+      __socket.on('message', _log)
+      __socket.on('success', _log)
+      __socket.on('disconnect', _log)
+      __socket.on('reconnect', _log)
+      __socket.on('reconnecting', _log)
+      __socket.on('connect_failed', _log)
+
+      function init_new_timeshar(res, callback)
+      {
+        if(!res)res = {};
+        if(!res.data) {
+          callback([])
+          return;
+        }
+        let newPrice = localStorage.getItem('new_price');
+        res.data[0].close = newPrice;
+
+        res.data.forEach((item,i)=>{
+            item.time = item.time * 1000
+            item.open=Number(item.open)
+            item.close=Number(item.close)
+            item.high=Number(item.high)
+            item.low=Number(item.low)
+        })
+        res.data.reverse()
+        callback(res.data)
+      }
+      
+
+      function init_next_timeshar(res){
+        
+      }
+
+      function init_marke_price(a,b,c,d)
+      {
+        if(d)return parseFloat(a*(1+d/100)).toFixed(4)
+        if(!b)return a
+        return parseFloat(a*(1+c/100)).toFixed(4)
+      }
+    </script>
+    <link rel="stylesheet" href="./static/iconfont/iconfont.css">
+    <script type="text/javascript" src="/static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/static/country.js"></script>
+    <link rel="stylesheet" href="/static/js/swiper.min.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
