@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="unit-list-container">
     <ul class="unit-list">
       <li
         v-for="(item, i) in list"
@@ -131,10 +131,17 @@
   .el-button.el-button--primary span {
     font-size: 0.6rem;
   }
-
+  .unit-list-container{
+    overflow: hidden;
+  }
   .unit-list {
     padding: 0 !important;
     color: @color;
+    height: calc(~'100vh - 2rem - 3rem');
+    width: calc(~'100vw + 15px');
+    padding-right: 15px;
+    overflow-x: hidden;
+    overflow-y: scroll;
     & > li {
       border-bottom: 1px solid #f5f7fa;
       padding: 6px 15px;

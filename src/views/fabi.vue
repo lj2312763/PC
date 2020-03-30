@@ -1,9 +1,13 @@
 <template>
   <div class="fabi">
-    <el-tabs type="border-card" v-model="activeName" @tab-click="changeTab" >
-      <el-tab-pane label="我要买" name="buy"><Buy /></el-tab-pane>
-      <el-tab-pane label="我要卖" name="sell"><Sell /></el-tab-pane>
-    </el-tabs>
+    <div class="fabi-header">
+      <div @click="changeTab('buy')" :class="activeName === 'buy' ? 'active': ''">我要买</div>
+      <div @click="changeTab('sell')" :class="activeName === 'sell' ? 'active': ''">我要卖</div>
+    </div>
+    <div>
+      <Buy v-if="activeName === 'buy'" />
+      <Sell v-else-if="activeName === 'sell'" />
+    </div>
   </div>
 </template>
 
@@ -27,20 +31,33 @@ import Sell from '../components/Fabi/Sell'
     },
     computed: {},
     methods: {
-      changeTab(tab, event) {
-        console.log(tab.name, event);
-        this.activeName = tab.name
+      changeTab(activeName) {
+        this.activeName = activeName
       }
     }
   };
 </script>
 
-<style lang="scss">
-  .fabi .el-tabs--border-card>.el-tabs__content{
-    padding: 0;
-  }
-
+<style lang="less">
+  @color2: #1c69b9;
   .fabi {
-
+    background: #ffffff;
+  }
+  .fabi-header{
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    &>div{
+      width: 4rem;
+      height: 2rem;
+      margin-right: 10px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+    &>div.active{
+      color: @color2;
+      transform: scale(1.2);
+    }
   }
 </style>
